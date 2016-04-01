@@ -17,10 +17,10 @@ let tab = regex(/[\s\t]+/)
 let oneLineComment = string('//').then(optWhitespace).then(regex(/[^\n\r]+/))
 let varName = regex(/[\w\d-_]+/)
 let variable = string('$').then(varName)
-let value = regex(/[\w\d-_"']+/)
+let value = regex(/[\w\d-_"',\\." ]+/).map(_ => _.trim())
 let property = seq(
   varName,
-  lexeme(string(':')).then(variable.or(value))
+  lexeme(string(':')).then(variable.map(_ => `$${_}`).or(value))
 )
 let declaration = seq(
     variable,
@@ -37,7 +37,11 @@ let mixin = seq(
 ).map(([mixinName, rules]) => ({
     type: 'mixin',
     key: mixinName,
-    value: rules
+    value: rules.map(([key, value]) => ({
+        key,
+        value,
+        type: 'declaration'
+    }))
 }))
 
 // line types
@@ -70,4 +74,4 @@ let sassFile = newline.many()
 
 let parser = lazy('sass', () => sassFile)
 
-parser.parse(getTestSASS()).value
+export const parser = lazy('sass', () => sassFile)

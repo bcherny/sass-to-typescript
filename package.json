@@ -2,10 +2,11 @@
   "name": "sass-to-typescript",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "start": "nodemon --exec babel-node -- --presets es2015 src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel-node -- --presets es2015 src/index.js --out dist/index.js",
+    "test": "node test.js"
   },
   "author": "",
   "license": "ISC",
