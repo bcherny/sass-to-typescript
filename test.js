@@ -1,3 +1,6 @@
+const assert = require('assert')
+const parser = require('./').parser
+
 // numbers
 assert.deepStrictEqual(
     parser.parse('$abc: 42').value,
