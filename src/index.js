@@ -24,7 +24,7 @@ let property = seq(
 )
 let declaration = seq(
     variable,
-    lexeme(string(':')).then(value)
+    lexeme(string(':')).then(variable.map(_ => `$${_}`).or(value))
 )
 // TODO: support mixins with args
 let mixin = seq(
@@ -71,7 +71,5 @@ let sassFile = newline.many()
     .skip(newline.many())
     .many()
     .skip(Parsimmon.eof)
-
-let parser = lazy('sass', () => sassFile)
 
 export const parser = lazy('sass', () => sassFile)

@@ -1,6 +1,3 @@
-const assert = require('assert')
-const parser = require('../')
-
 // numbers
 assert.deepStrictEqual(
     parser.parse('$abc: 42').value,
@@ -19,6 +16,12 @@ assert.deepStrictEqual(
 assert.deepStrictEqual(
     parser.parse('$abc: "foo" // bar baz moo!').value,
     [{ type: 'declaration', key: 'abc', value: '"foo"', comment: 'bar baz moo!' }]
+)
+
+// variables
+assert.deepStrictEqual(
+    parser.parse('$abc: $foo').value,
+    [{ type: 'declaration', key: 'abc', value: '$foo', comment: undefined }]
 )
 
 // complex values
